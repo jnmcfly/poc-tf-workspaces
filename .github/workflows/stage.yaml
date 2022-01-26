@@ -1,0 +1,66 @@
+---
+name: "Deploy: Stage"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    outputs:
+      new_tag: ${{ steps.tag_version.outputs.new_tag }}
+      changelog: ${{ steps.tag_version.outputs.changelog }}
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.1.4
+      
+      - name: 🟡 lint and test
+        run: echo "linting... testing..."
+
+      - name: Create workspace
+        run: terraform workspace new stage
+
+      - name: Init
+        run: terraform init
+
+      - name: Bump version and push tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          dry_run: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          release_branches: main
+          create_annotated_tag: true
+          custom_release_rules: >
+            hotfix:patch:Fix,
+            fix:patch:Fix,
+            patch:patch:Fix,
+            bug:patch:Fix,
+            security:patch:Security,
+            feat:minor:Feature,
+            feature:minor:Feature,
+            minor:minor:Feature,
+            breaking:major:BREAKING,
+            break:major:BREAKING,
+            major:major:BREAKING,
+            stable:major:BREAKING,
+            release:major:BREAKING
+
+      - name: 🟢 deploy to stage
+        run: echo "deploy to stage"
+
+      # - name: Create issue for approval
+      #   id: create_issue
+      #   uses: JasonEtco/create-an-issue@v2
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     ENVIRONMENT: Stage
+      #     TAG_VERSION: ${{ steps.tag_version.outputs.new_tag }}
+      #     CHANGELOG: ${{ steps.tag_version.outputs.changelog }}
+      #   with:
+      #     filename: .github/deployment-approval.md
