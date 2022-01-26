@@ -22,11 +22,11 @@ jobs:
       - name: 🟡 lint and test
         run: echo "linting... testing..."
 
-      - name: Create workspace
-        run: terraform workspace new stage
-
       - name: Init
         run: terraform init
+
+      - name: Create workspace
+        run: terraform workspace new stage
 
       - name: Bump version and push tag
         id: tag_version
