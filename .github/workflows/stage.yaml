@@ -28,6 +28,9 @@ jobs:
       - name: Create workspace
         run: terraform workspace new stage
 
+      - name: 🟢 deploy to stage
+        run: echo "deploy to stage"
+
       - name: Bump version and push tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.0
@@ -51,16 +54,12 @@ jobs:
             stable:major:BREAKING,
             release:major:BREAKING
 
-      - name: 🟢 deploy to stage
-        run: echo "deploy to stage"
-
-      # - name: Create issue for approval
-      #   id: create_issue
-      #   uses: JasonEtco/create-an-issue@v2
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     ENVIRONMENT: Stage
-      #     TAG_VERSION: ${{ steps.tag_version.outputs.new_tag }}
-      #     CHANGELOG: ${{ steps.tag_version.outputs.changelog }}
-      #   with:
-      #     filename: .github/deployment-approval.md
+      - name: Create issue for approval
+        id: create_issue
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag_version.outputs.new_tag }}
+          CHANGELOG: ${{ steps.tag_version.outputs.changelog }}
+        with:
+          filename: .github/approve-deployment.md
