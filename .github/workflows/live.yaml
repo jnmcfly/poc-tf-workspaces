@@ -29,3 +29,8 @@ jobs:
           payload: yaml
 
       - run: "echo TAG: ${{ fromJSON(steps.issue_body_parser.outputs.payload).tag }}"
+      - uses: actions-ecosystem/action-remove-labels@v1
+        if: ${{ startsWith(github.event.comment.body, '/approve') }}
+        with:
+          labels: |
+            wait-for-approval
