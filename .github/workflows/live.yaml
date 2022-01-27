@@ -10,7 +10,7 @@ jobs:
     if: ${{ !github.event.issue.pull_request && github.event.comment.body == '/approve' }}
     runs-on: ubuntu-20.04
     outputs:
-      output: ${{ steps.issue_body_parser.outputs }}
+      output: ${{ toJSON(steps.issue_body_parser.outputs).tag }}
     #  deploy-environment: ${{ fromJSON(steps.issue_body_parser.outputs.payload).environment }}
     #  ci-run-number: ${{ fromJSON(steps.issue_body_parser.outputs.payload).runNumber }}
     steps:
