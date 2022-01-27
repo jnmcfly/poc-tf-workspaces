@@ -51,12 +51,12 @@ jobs:
             stable:major:BREAKING,
             release:major:BREAKING
 
-      # - name: Create issue for approval
-      #   id: create_issue
-      #   uses: JasonEtco/create-an-issue@v2
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     TAG: ${{ steps.tag_version.outputs.new_tag }}
-      #     CHANGELOG: ${{ steps.tag_version.outputs.changelog }}
-      #   with:
-      #     filename: .github/approve-deployment.md
+      - name: Create issue for approval
+        id: create_issue
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag_version.outputs.new_tag }}
+          CHANGELOG: ${{ steps.tag_version.outputs.changelog }}
+        with:
+          filename: .github/approve-deployment.md
