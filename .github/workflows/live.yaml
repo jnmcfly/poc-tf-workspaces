@@ -7,10 +7,10 @@ on:
 
 jobs:  
   parse:
-    if: ${{ !github.event.issue.pull_request && github.event.comment.body == 'Approved' }}
+    if: ${{ !github.event.issue.pull_request && github.event.comment.body == '/approve' }}
     runs-on: ubuntu-20.04
-    outputs:
-      test: ${{ fromJSON(steps.issue_body_parser.outputs.metadata) }}
+    #outputs:
+    #  test: ${{ fromJSON(steps.issue_body_parser.outputs.metadata) }}
     #  deploy-environment: ${{ fromJSON(steps.issue_body_parser.outputs.payload).environment }}
     #  ci-run-number: ${{ fromJSON(steps.issue_body_parser.outputs.payload).runNumber }}
     steps:
@@ -26,4 +26,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           issue_id: ${{ github.event.issue.number }}         
-          payload_marker: metadata
+          payload: yaml
+          
