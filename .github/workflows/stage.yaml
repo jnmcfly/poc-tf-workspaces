@@ -9,9 +9,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-20.04
-    outputs:
-      new_tag: ${{ steps.tag_version.outputs.new_tag }}
-      changelog: ${{ steps.tag_version.outputs.changelog }}
     steps:
       - uses: actions/checkout@master
 
@@ -35,7 +32,7 @@ jobs:
         id: tag_version
         uses: mathieudutour/github-tag-action@v6.0
         with:
-          #dry_run: true
+          dry_run: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_branches: main
           create_annotated_tag: true
@@ -54,12 +51,12 @@ jobs:
             stable:major:BREAKING,
             release:major:BREAKING
 
-      # - name: Create issue for approval
-      #   id: create_issue
-      #   uses: JasonEtco/create-an-issue@v2
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     TAG: ${{ steps.tag_version.outputs.new_tag }}
-      #     CHANGELOG: ${{ steps.tag_version.outputs.changelog }}
-      #   with:
-      #     filename: .github/approve-deployment.md
+      - name: Create issue for approval
+        id: create_issue
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.tag_version.outputs.new_tag }}
+          CHANGELOG: ${{ steps.tag_version.outputs.changelog }}
+        with:
+          filename: .github/approve-deployment.md
