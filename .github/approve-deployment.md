@@ -1,5 +1,5 @@
 ---
-title: Deployment Approval Request
+title: {{ env.TAG }} - Deployment Approval Request
 labels: wait-for-approval
 ---
 
