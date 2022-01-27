@@ -39,20 +39,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           release_branches: main
           create_annotated_tag: true
-          custom_release_rules: >
-            hotfix:patch:Fix,
-            fix:patch:Fix,
-            patch:patch:Fix,
-            bug:patch:Fix,
-            security:patch:Security,
-            feat:minor:Feature,
-            feature:minor:Feature,
-            minor:minor:Feature,
-            breaking:major:BREAKING,
-            break:major:BREAKING,
-            major:major:BREAKING,
-            stable:major:BREAKING,
-            release:major:BREAKING
+          custom_release_rules: hotfix:patch:Fix,fix:patch:Fix,patch:patch:Fix,bug:patch:Fix,security:patch:Security,feat:minor:Feature,feature:minor:Feature,minor:minor:Feature,breaking:major:BREAKING,break:major:BREAKING,major:major:BREAKING,stable:major:BREAKING,release:major:BREAKING
 
       - name: Create issue for approval
         id: create_issue
